@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progress1_project/src/domain/useCases/auth/AuthUsesCase.dart';
 import 'package:progress1_project/src/domain/useCases/auth/LoginAuthUseCase.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -6,8 +7,8 @@ import 'LoginBloc.dart';
 import 'package:progress1_project/src/domain/utils/Resource.dart';
 
 class LoginBlocCubit extends Cubit<Loginbloc>{
-  LoginBlocCubit():super(LoginInitial());
-  LoginAuthUseCase loginAuthUseCase = LoginAuthUseCase();
+  AuthUsesCases authUsesCases;
+  LoginBlocCubit(this.authUsesCases):super(LoginInitial());
   
   final _emailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
@@ -40,7 +41,7 @@ class LoginBlocCubit extends Cubit<Loginbloc>{
 
   void getInformation()async{
     _responseController.add(Loading());
-    Resource authResponse=  await loginAuthUseCase.run(_emailController.value, _passwordController.value);
+    Resource authResponse=  await authUsesCases.login.run(_emailController.value, _passwordController.value);
     _responseController.add(authResponse);
   }
 

@@ -1,9 +1,10 @@
-import 'package:progress1_project/src/data/dataSource/remote/repository/AuthRepositoryImpl.dart';
+import 'package:progress1_project/src/domain/repository/AuthRepository.dart';
 
 class LoginAuthUseCase {
 
-  AuthRepositoryImpl authRepositoryImpl = AuthRepositoryImpl();
+  AuthRepository repository;
+  LoginAuthUseCase(this.repository);
 
-  run(String email, String password)=> authRepositoryImpl.login(email, password);
+  run(String email, String password)=> repository.login(email, password);
   
 }

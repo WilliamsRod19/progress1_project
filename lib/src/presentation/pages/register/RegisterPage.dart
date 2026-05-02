@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress1_project/src/domain/utils/Resource.dart';
 import 'package:progress1_project/src/presentation/pages/register/RegisterBlocCubit.dart';
 import 'package:progress1_project/src/presentation/widgets/DefaultButton.dart';
 import 'package:progress1_project/src/presentation/widgets/DefaultTextField.dart';
@@ -168,7 +169,7 @@ class _RegisterpageState extends State<Registerpage> {
                             text: 'REGISTER', 
                             onPressed: () {
                               if (asyncSnapshot.hasData) {
-                                _registerBlocCubit?.getInformation();
+                                _registerBlocCubit?.register();
                               } else {
                                 Fluttertoast.showToast(msg: 'Something is happening');
                               }
@@ -193,6 +194,20 @@ class _RegisterpageState extends State<Registerpage> {
                 },
               ),
             ),
+            StreamBuilder(stream: _registerBlocCubit?.responseStream, builder: (context, snapshot) {
+              final state = snapshot.data;
+              if (state is Loading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is Error) {
+                Fluttertoast.showToast(msg: state.message);
+              }else if (state is Success) {
+                Fluttertoast.showToast(msg: 'User created successfully');
+              }
+              return Container();
+            })
           ],
         ),
       ),

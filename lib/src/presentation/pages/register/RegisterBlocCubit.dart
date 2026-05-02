@@ -1,9 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progress1_project/src/domain/models/CreateUserResponse.dart';
+import 'package:progress1_project/src/domain/useCases/auth/AuthUsesCase.dart';
+import 'package:progress1_project/src/domain/useCases/auth/RegisterUsesCases.dart';
+import 'package:progress1_project/src/domain/utils/Resource.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:progress1_project/src/presentation/pages/register/RegisterBlocState.dart';
+import 'package:progress1_project/src/domain/models/User.dart';
 
 class RegisterBlocCubit extends Cubit<RegisterBlocState> {
-  RegisterBlocCubit() : super(RegisterInitialState());
+  AuthUsesCases authUsesCases;
+  RegisterBlocCubit(this.authUsesCases) : super(RegisterInitialState());
 
   // controllers
   final _nameController = BehaviorSubject<String>();
@@ -12,6 +18,8 @@ class RegisterBlocCubit extends Cubit<RegisterBlocState> {
   final _phoneController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
   final _confirmPasswordController = BehaviorSubject<String>();
+  final _responseController = BehaviorSubject<Resource>();
+
 
   // streams
   Stream<String> get nameStream => _nameController.stream;
@@ -20,7 +28,7 @@ class RegisterBlocCubit extends Cubit<RegisterBlocState> {
   Stream<String> get phoneStream => _phoneController.stream;
   Stream<String> get passwordStream => _passwordController.stream;
   Stream<String> get confirmPasswordStream => _confirmPasswordController.stream;
-
+  Stream<Resource> get responseStream => _responseController;
   Stream<bool> get ValidateForm => Rx.combineLatest6(
     nameStream,
     lastnameStream,
@@ -82,7 +90,16 @@ class RegisterBlocCubit extends Cubit<RegisterBlocState> {
     }
   }
 
-  void getInformation() {
-    print('Name: ${_nameController.value}');
+  void register() async{
+    _responseController.add(Loading());
+    User user = User(
+      name: _nameController.value,
+      lastname: _lastnameController.value,
+      email: _emailController.value,
+      phone: _phoneController.value,
+      password: _passwordController.value,
+    );
+    Resource<CreateUserResponse> response = await authUsesCases.register.run(user);
+    _responseController.add(response);
   }
 }

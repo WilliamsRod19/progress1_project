@@ -19,12 +19,12 @@ class AuthResponse {
     });
 
     factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
-        createUserResponse: CreateUserResponse.fromJson(json["createUserResponse"]),
+        createUserResponse: CreateUserResponse.fromJson(json["userResponse"]),
         token: json["token"],
     );
 
     Map<String, dynamic> toJson() => {
-        "createUserResponse": createUserResponse.toJson(),
+        "userResponse": createUserResponse.toJson(),
         "token": token,
     };
 }

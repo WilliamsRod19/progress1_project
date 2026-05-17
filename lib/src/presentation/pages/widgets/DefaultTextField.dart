@@ -5,6 +5,7 @@ class Defaulttextfield extends StatelessWidget {
   IconData icon;
   Function(String value) onChanged;
   bool obscureText;
+  String? Function(String?)? validator;
   bool isNumber;
 
   Defaulttextfield({
@@ -13,16 +14,18 @@ class Defaulttextfield extends StatelessWidget {
     required this.icon,
     required this.onChanged,
     required this.obscureText,
+    this.validator,
     required this.isNumber,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       onChanged: (value){
         onChanged(value);
       },
       obscureText: obscureText ? true : false,
+      validator: validator,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(
         label: Text(

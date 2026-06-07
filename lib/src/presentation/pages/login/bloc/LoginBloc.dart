@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progress1_project/src/domain/models/AuthResponse.dart';
 import 'package:progress1_project/src/domain/useCases/auth/AuthUsesCase.dart';
 import 'package:progress1_project/src/presentation/Utils/BlocFormItem.dart';
 import 'package:progress1_project/src/presentation/pages/login/bloc/LoginEvent.dart';
@@ -16,12 +17,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onLoginSubmitted);
+    on<LoginReset>(_onLoginReset);
   }
 
   final formKey = GlobalKey<FormState>();
 
   Future<void> _onInitEvent(InitEvent event, Emitter<LoginState> emit) async {
+    AuthResponse? userSession = await authUsesCases.getUserSession.run();
     emit(state.copyWith(formKey: formKey));
+    if (userSession != null) {
+      emit(state.copyWith(response: Success(userSession), formKey: formKey));
+    }
   }
 
   Future<void> _onEmailChanged(
@@ -63,7 +69,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       state.email.value,
       state.password.value,
     );
+    if (authResponse is Success<AuthResponse>) {
+      await authUsesCases.saveUserSession.run(authResponse.data);
+    }
     emit(state.copyWith(response: authResponse, formKey: formKey));
+  }
+
+  Future<void> _onLoginReset(
+    LoginReset event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+      email: BlocFormItem(value: '', error: null),
+      password: BlocFormItem(value: '', error: null),
+      response: null,
+      formKey: formKey,
+    ));
   }
 
   final _emailController = BehaviorSubject<String>();
@@ -92,8 +113,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Stream<bool> get validateForm =>
-      Rx.combineLatest2(emailStream, passwordStream, (a, b) => true);
+  Stream<bool> get validateForm => Rx.combineLatest2(emailStream, passwordStream, (a, b) => true);
 
   void getInformation() async {
     _responseController.add(Loading());
@@ -103,4 +123,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
     _responseController.add(authResponse);
   }
+
+
 }

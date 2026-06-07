@@ -20,6 +20,15 @@ class _LoginpageState extends State<Loginpage> {
   LoginBloc? _loginBloc;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
+      _loginBloc?.add(InitEvent());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     _loginBloc = BlocProvider.of<LoginBloc>(context, listen: false);
@@ -140,7 +149,6 @@ class _LoginpageState extends State<Loginpage> {
                   ),
                   BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {
-
                       final responsState = state.response;
 
                       if (responsState is Loading) {
@@ -159,6 +167,9 @@ class _LoginpageState extends State<Loginpage> {
                           msg: 'Login exitoso',
                           toastLength: Toast.LENGTH_LONG
                         );
+                        WidgetsBinding.instance.addPostFrameCallback((callback) {
+                          Navigator.pushNamedAndRemoveUntil(context, '/roles', (route) => false);
+                        });
                       }
                       return Container();
                     }

@@ -31,3 +31,7 @@ class PasswordChanged extends LoginEvent {
 class LoginSubmitted extends LoginEvent {
   const LoginSubmitted();
 }
+
+class LoginReset extends LoginEvent {
+  const LoginReset();
+}

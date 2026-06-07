@@ -19,17 +19,17 @@ class LoginState extends Equatable {
   LoginState copyWith({
     BlocFormItem? email,
     BlocFormItem? password,
-    Resource? response,
     GlobalKey<FormState>? formKey,
+    Resource? response
   }) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
-      response: response ?? this.response,
-      formKey: formKey ?? this.formKey,
+      response: response,
+      formKey: formKey,
     );
   }
 
   @override
-  List<Object?> get props => [email, password, response, formKey];
+  List<Object?> get props => [email, password, response];
 }

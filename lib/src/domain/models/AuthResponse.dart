@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final authResponse = authResponseFromJson(jsonString);
-
 import 'dart:convert';
 import 'package:progress1_project/src/domain/models/CreateUserResponse.dart';
 
@@ -10,21 +6,18 @@ AuthResponse authResponseFromJson(String str) => AuthResponse.fromJson(json.deco
 String authResponseToJson(AuthResponse data) => json.encode(data.toJson());
 
 class AuthResponse {
-    CreateUserResponse createUserResponse;
-    String token;
+  CreateUserResponse createUserResponse;
+  String token;
 
-    AuthResponse({
-        required this.createUserResponse,
-        required this.token,
-    });
+  AuthResponse({required this.createUserResponse, required this.token});
 
-    factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
-        createUserResponse: CreateUserResponse.fromJson(json["userResponse"]),
-        token: json["token"],
-    );
+  factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
+    createUserResponse: CreateUserResponse.fromJson(json["userResponse"]),
+    token: json["token"],
+  );
 
-    Map<String, dynamic> toJson() => {
-        "userResponse": createUserResponse.toJson(),
-        "token": token,
-    };
+  Map<String, dynamic> toJson() => {
+    "userResponse": createUserResponse.toJson(),
+    "token": token,
+  };
 }

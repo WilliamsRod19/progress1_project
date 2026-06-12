@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progress1_project/injection.dart';
 import 'package:progress1_project/src/BlocProviders.dart';
 import 'package:progress1_project/src/presentation/pages/client/home/ClientHomePage.dart';
+import 'package:progress1_project/src/presentation/pages/client/profile/ClientProfilePage.dart';
 import 'package:progress1_project/src/presentation/pages/login/LoginPage.dart';
 import 'package:progress1_project/src/presentation/pages/register/RegisterPage.dart';
 import 'package:progress1_project/src/presentation/pages/roles/RolesPage.dart';
@@ -25,6 +26,7 @@ class MainApp extends StatelessWidget {
           '/register': (BuildContext context) => Registerpage(),
           '/roles': (BuildContext context) => RolesPage(),
           '/client/home': (BuildContext context) => ClientHomePage(),
+          '/client/profile': (BuildContext context) => ClientProfilePage()
         },
       ),
     );

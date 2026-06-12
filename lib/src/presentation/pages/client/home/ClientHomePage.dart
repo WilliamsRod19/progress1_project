@@ -45,10 +45,11 @@ class _ClientHomePageState extends State<ClientHomePage> {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
+                    leading: Icon(Icons.person),
+                    title: Text('Perfil'),
                     onTap: () {
-                      // Navigate to settings page
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, "/client/profile");
                     },
                   ),
                   ListTile(

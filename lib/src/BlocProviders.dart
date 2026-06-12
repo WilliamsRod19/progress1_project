@@ -3,6 +3,8 @@ import 'package:progress1_project/injection.dart';
 import 'package:progress1_project/src/domain/useCases/auth/AuthUsesCase.dart';
 import 'package:progress1_project/src/presentation/pages/client/home/bloc/ClientHomeBloc.dart';
 import 'package:progress1_project/src/presentation/pages/client/home/bloc/ClientHomeEvent.dart';
+import 'package:progress1_project/src/presentation/pages/client/profile/bloc/ClientProfileBloc.dart';
+import 'package:progress1_project/src/presentation/pages/client/profile/bloc/ClientProfileEvent.dart';
 import 'package:progress1_project/src/presentation/pages/login/bloc/LoginBloc.dart';
 import 'package:progress1_project/src/presentation/pages/login/bloc/LoginEvent.dart';
 import 'package:progress1_project/src/presentation/pages/register/bloc/RegisterBloc.dart';
@@ -22,5 +24,8 @@ List<BlocProvider> blocProviders = [
   ),
   BlocProvider<ClientHomeBloc>(
     create: (context) => ClientHomeBloc(locator<AuthUsesCases>())..add(ClientHomeInit()),
+  ),
+  BlocProvider<ClientProfileBloc>(
+    create: (context) => ClientProfileBloc(locator<AuthUsesCases>())..add(ClientProfileInit()),
   )
 ];
